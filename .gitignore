@@ -1,0 +1,8 @@
+.idea/
+build/
+venv/
+*.data/*
+db.sqlite3
+*.csv
+*/__pycache__/*
+*/migrations/*
