@@ -9,9 +9,25 @@ driver = GraphDatabase.driver("bolt://127.0.0.1:7687", auth=basic_auth("neo4j", 
 
 def home(request):
     session=driver.session()
-    x="MATCH (n:adult_data)where n.sex='Male' and n.age='40' RETURN n LIMIT 25"
-    result = session.run(x)
-    print(result)
-    for i in result:
-        print(i)
-    return render(request,"webapp/index.html",{'data': result})
+    x="MATCH (n:adult_data)  RETURN n.sex as sex, count(n.sex) as frequency ORDER BY n.sex"
+    sex_count=session.run(x)
+    dict={}
+    for i in sex_count:
+        dict.update({i[0]:i[1]})
+    print(dict)
+
+
+    x="MATCH (n:adult_data)  RETURN n.relation as relation, count(n.relation) as frequency ORDER BY n.relation LIMIT 25"
+    relationship_count=session.run(x)
+    dict = {}
+    for i in relationship_count:
+        dict.update({i[0]: i[1]})
+    print(dict)
+
+    # x="MATCH (n:adult_data) RETURN n"
+    # complete_data=session.run(x)
+    # for i in complete_data:
+    #     print(i)
+    session.close()
+    return render(request,"webapp/index.html",{'Male_count':8, 'Female_count':5,
+                                               'complete_data':5})
