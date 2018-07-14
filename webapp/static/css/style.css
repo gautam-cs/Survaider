@@ -79,6 +79,13 @@ text-decoration: none;
 #graph{
     text-align: left;
     color: black;
+    width: 40%;
+}
+
+#pie{
+    text-align: right;
+    color: black;
+    width: 40%;
 }
 
 #graph_header{

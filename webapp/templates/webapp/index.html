@@ -4,12 +4,11 @@
 <title>graph visualistion</title>
 <!DOCTYPE html>
 <meta charset="utf-8">
-
 <style>
+
 .bar {
   fill: steelblue;
 }
-
 
 .bar:hover {
   stroke: black;
@@ -50,13 +49,11 @@ div.tooltip {
 <div id="graph_header" align="center"></div>
 <div id = "graph"></div>
 <div id="textDiv"></div>
-{{ Male_count}}
-{{Female_count}}
 <script>
 var headerNames = []
 var margin = {top: 10, right: 80, bottom: 80, left: 90},
-    width = 900 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = 400 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
 
 
 
@@ -84,17 +81,10 @@ var svg = d3.select("#graph")
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("{% static "data/converted_data.csv" %}", type, function(error, data) {
+d3.csv("{% static "data/sex_result_count.csv" %}", type, function(error, data) {
    headerNames = d3.keys(data[0]);
   console.log(headerNames);
 
-  if(data.length>10){
-    new_data=[];
-    for(var i=0; i<10; i++){
-      new_data.push(data[i])
-  }
-  data=new_data;
-  }
 
  x.domain(data.map(function(d) { return d[headerNames[0]]; }));
  var max_val = d3.max(data, function(d) { return +d[headerNames[1]]; })
@@ -111,8 +101,8 @@ d3.csv("{% static "data/converted_data.csv" %}", type, function(error, data) {
       .selectAll(".tick text")
       .call(wrap, x.rangeBand());
 
-if(headerNames[1]=="Quantity"){
-  var ytext="Quantity(#)";}
+if(headerNames[1]=="frequency"){
+  var ytext="Frequency(#)";}
 else if(headerNames[1]=="revenue"){
   var ytext="revenue($)";
 }
@@ -205,13 +195,6 @@ if (+data[0][headerNames[1]]> +data[1][headerNames[1]]) {
 else if(+data[0][headerNames[1]]< +data[1][headerNames[1]]) {
   top_bottom="Bottom";
 }
-var textDiv=d3.select("#textDiv");
-    textDiv.append("text")
-        .attr("id","text_content")
-       .style("font-size","25px")
-       .text([top_bottom+ " "+top_data_length +" entries contribute "+percent_value_3+"% of total  of the total "+headerNames[2]+". "+count+" entries contribute to 80% of revenue"]);
-       // .text([top_bottom+ " "+top_data_length+" "+headerNames[0]+" contribute "+percent_value_3+"% of total  of the total "+headerNames[1]+". It consist of " +top_bottom+ " "+count+" products to complete more than 80% of revenue"]);
-
 });
 
 
