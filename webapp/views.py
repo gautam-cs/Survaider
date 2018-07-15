@@ -19,7 +19,7 @@ def home(request):
             "RETURN n.age as age,n.workclass as workclass,  n.fnlweight as fnlweight, n.education as education,  " \
             "n.education_num as education_num, n.marital_status as marital_status, n.occupation as occupation, n.relation as relation," \
             " n.race as race, n.sex as sex, n.capital_gain as capital_gain, n.capital_loss as capital_loss, n.hours_per_week as hours_per_week," \
-            " n.native_country as native_country, n.salary as salary limit 10"
+            " n.native_country as native_country, n.salary as salary limit 25"
         complete_data = session.run(x)
         column_list = []
         for i in complete_data:
@@ -50,9 +50,9 @@ def home(request):
             writer.writerow(val)
         csvfile.close()
 
-        x="MATCH (n:adult_data)  RETURN n.relation as relation, count(n.relation) as count ORDER BY n.relation LIMIT 25"
+        x="MATCH (n:adult_data)  RETURN n.relation as label, count(n.relation) as value ORDER BY n.relation"
         relationship_count=session.run(x)
-        column_list = ['relation','count']
+        column_list = ['label','value']
         csvfile = open(os.path.join(base_dir, 'webapp/static/data/relation_result_count.csv'), 'w', newline='')
         writer = csv.writer(csvfile)
         writer.writerow(column_list)
@@ -68,7 +68,7 @@ def home(request):
           "RETURN n.age as age,n.workclass as workclass,  n.fnlweight as fnlweight, n.education as education,  " \
           "n.education_num as education_num, n.marital_status as marital_status, n.occupation as occupation, n.relation as relation," \
           " n.race as race, n.sex as sex, n.capital_gain as capital_gain, n.capital_loss as capital_loss, n.hours_per_week as hours_per_week," \
-          " n.native_country as native_country, n.salary as salary limit 10"
+          " n.native_country as native_country, n.salary as salary limit 50"
         complete_data=session.run(x)
         column_list = []
         for i in complete_data:
@@ -84,4 +84,4 @@ def home(request):
                 list.append(a)
             list_list.append(list)
     session.close()
-    return render(request,"webapp/data.html",{'list_list':list_list,'column_list':column_list})
+    return render(request,"webapp/home.html",{'list_list':list_list,'column_list':column_list})

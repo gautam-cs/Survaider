@@ -1,0 +1,61 @@
+{% extends 'webapp/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<title>graph visualistion</title>
+<script>
+        $(document).ready(function () {
+            $('#tblexample').DataTable(
+                {"pageLength": 5}
+            );
+        });
+    </script>
+    <center><h1>total data</h1></center>
+    <div>
+        <form method="POST"  class="wrapper">
+            {% csrf_token %}
+            Gender:
+            <select name="sex">
+                <option value=Male>Male</option>
+                <option value=Female>Female</option>
+            </select> | Race:
+            <select name="race">
+                <option value=White>White</option>
+                <option value=Amer-Indian-Eskimo>Amer-Indian-Eskimo</option>
+                <option value=Asian-Pac-Islander>Asian-Pac-Islander</option>
+                <option value=Black>Black</option>
+                <option value=Other>Other</option>
+            </select> | Relation:
+            <select name="relationship">
+                <option value=Not-in-family>Not-in-family</option>
+                <option value=Husband>Husband</option>
+                <option value=Wife>Wife</option>
+                <option value=Unmarried>Unmarried</option>
+                <option value=Own-child>Own-child</option>
+                <option value=Other-relative>Other-relative</option>
+            </select>
+            <input type="submit" name="submit" value="Load Data">
+            <!--<input type="submit" id="btnSubmit" value="Load Data" onclick="fillTable">-->
+        </form>
+    </div>
+
+    <div>
+        <table id="tblexample" class="display" style="width:100%">
+            <thead>
+            <tr>
+                {% for item in column_list %}
+                    <th> {{ item }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for list in list_list %}
+                <tr>
+                    {% for item in list %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{%  endblock %}
